@@ -1,0 +1,25 @@
+{
+  "name": "mesto-express",
+  "version": "0.0.1",
+  "description": "prakticum.web.project",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack  --mode production",
+    "dev": "webpack serve",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/konjvpaljto/express-mesto.git"
+  },
+  "author": "Arkady Flitman",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.23.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  },
+  "dependencies": {
+  }
+}
