@@ -1,9 +1,13 @@
 const User = require('../models/user');
+const { checkErrCreate, checkErrFindUser, checkErrUpdate } = require('../utils/errors.js');
 
 module.exports.getUsers = (req, res) => {
   User.find({})
     .then((user) => res.send(user))
-    .catch((err) => res.status(500).send({ message: err }));
+    .catch((err) => {
+      const { status, message } = checkErrFindUser(err);
+      return (res.status(status).send({ message }));
+    });
 };
 
 module.exports.getUser = (req, res) => {
@@ -18,7 +22,10 @@ module.exports.getUser = (req, res) => {
       return (user);
     })
     .then((user) => res.send(user))
-    .catch((err) => res.status(500).send({ message: err }));
+    .catch((err) => {
+      const { status, message } = checkErrFindUser(err);
+      return (res.status(status).send({ message }));
+    });
 };
 
 module.exports.createUser = (req, res) => {
@@ -34,7 +41,10 @@ module.exports.createUser = (req, res) => {
       return (user);
     })
     .then((user) => res.send(user))
-    .catch((err) => res.status(500).send({ message: err }));
+    .catch((err) => {
+      const { status, message } = checkErrCreate(err);
+      return (res.status(status).send({ message }));
+    });
 };
 
 module.exports.updateProfile = (req, res) => {
@@ -50,7 +60,10 @@ module.exports.updateProfile = (req, res) => {
       return (user);
     })
     .then((user) => res.send(user))
-    .catch((err) => res.status(500).send({ message: err }));
+    .catch((err) => {
+      const { status, message } = checkErrUpdate(err);
+      return (res.status(status).send({ message }));
+    });
 };
 
 module.exports.updateAvatar = (req, res) => {
@@ -66,5 +79,8 @@ module.exports.updateAvatar = (req, res) => {
       return (user);
     })
     .then((user) => res.send(user))
-    .catch((err) => res.status(500).send({ message: err }));
+    .catch((err) => {
+      const { status, message } = checkErrUpdate(err);
+      return (res.status(status).send({ message }));
+    });
 };
