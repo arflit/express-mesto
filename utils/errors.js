@@ -33,6 +33,7 @@ module.exports.checkErrUpdate = (err) => {
   let message = 'На сервере произошла ошибка';
   if (err.name === 'ValidationError') {
     status = 400;
+    message = err.message;
   }
   if (err.path === '_id') {
     status = 404;
