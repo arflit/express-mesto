@@ -3,6 +3,7 @@ const { checkErrCreate, checkErrFindUser, checkErrUpdate } = require('../utils/e
 
 module.exports.getUsers = (req, res) => {
   User.find({})
+    .orFail()
     .then((user) => res.send(user))
     .catch((err) => {
       const { status, message } = checkErrFindUser(err);
@@ -12,15 +13,7 @@ module.exports.getUsers = (req, res) => {
 
 module.exports.getUser = (req, res) => {
   User.findById(req.params.userId)
-    .then((data) => {
-      const user = {
-        _id: data.id,
-        name: data.name,
-        about: data.about,
-        avatar: data.avatar,
-      };
-      return (user);
-    })
+    .orFail()
     .then((user) => res.send(user))
     .catch((err) => {
       const { status, message } = checkErrFindUser(err);
@@ -31,15 +24,7 @@ module.exports.getUser = (req, res) => {
 module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
   User.create({ name, about, avatar })
-    .then((data) => {
-      const user = {
-        _id: data.id,
-        name: data.name,
-        about: data.about,
-        avatar: data.avatar,
-      };
-      return (user);
-    })
+    .orFail()
     .then((user) => res.send(user))
     .catch((err) => {
       const { status, message } = checkErrCreate(err);
@@ -50,15 +35,7 @@ module.exports.createUser = (req, res) => {
 module.exports.updateProfile = (req, res) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(req.user._id, { name, about })
-    .then((data) => {
-      const user = {
-        _id: data.id,
-        name: data.name,
-        about: data.about,
-        avatar: data.avatar,
-      };
-      return (user);
-    })
+    .orFail()
     .then((user) => res.send(user))
     .catch((err) => {
       const { status, message } = checkErrUpdate(err);
@@ -69,15 +46,7 @@ module.exports.updateProfile = (req, res) => {
 module.exports.updateAvatar = (req, res) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { avatar })
-    .then((data) => {
-      const user = {
-        _id: data.id,
-        name: data.name,
-        about: data.about,
-        avatar: data.avatar,
-      };
-      return (user);
-    })
+    .orFail()
     .then((user) => res.send(user))
     .catch((err) => {
       const { status, message } = checkErrUpdate(err);
