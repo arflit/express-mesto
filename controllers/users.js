@@ -14,7 +14,7 @@ module.exports.getUsers = (req, res) => {
 module.exports.getUser = (req, res) => {
   User.findById(req.params.userId)
     .orFail()
-    .then((user) => res.send(user)) // здесь и в подобных местах я создавал новый объект, чтобы не отдавать в ответе ненужное мне поле "__v".
+    .then((user) => res.send(user))
     .catch((err) => {
       const { status, message } = checkErrFindUser(err);
       return (res.status(status).send({ message }));
