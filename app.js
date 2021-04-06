@@ -3,19 +3,27 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 const router = require('./routes/index');
 
 const { PORT = 3000 } = process.env;
 const app = express();
 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // за 15 минут
+  max: 100, // можно совершить максимум 100 запросов с одного IP
+});
+
+app.use(limiter);
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
 });
-console.log(process.env.NODE_ENV);
 app.use(bodyParser.json());
-
+app.use(cookieParser());
+app.use(helmet());
 app.use((req, res, next) => {
   req.user = {
     _id: '60617700a858206f79089c90',
