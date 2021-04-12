@@ -3,19 +3,25 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
     minlength: 2,
     maxlength: 30,
+    default: 'Жак-Ив Кусто',
   },
   about: {
     type: String,
-    required: true,
     minlength: 2,
     maxlength: 30,
+    default: 'Исследователь',
   },
   avatar: {
     type: String,
-    required: true,
+    default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
+    validate: {
+      validator(v) {
+        return /^(https?\:\/\/)?[a-z0-9-_\.\/]*\.(jpg|jpeg|png|gif)$/i.test(v);
+      },
+      message: 'передан некорректный URL изображения',
+    },
   },
   email: {
     type: String,
@@ -23,9 +29,9 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator(v) {
-        return /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/i.test(v);
+        return /[-.\w]+@([\w-]+\.)+[\w-]+/i.test(v);
       },
-      message: 'передан не адрес электронной почты',
+      message: 'передан некорректный адрес электронной почты',
     },
   },
   password: {
