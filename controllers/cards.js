@@ -21,12 +21,22 @@ module.exports.createCard = (req, res) => {
 };
 
 module.exports.deleteCard = (req, res) => {
-  Card.findByIdAndRemove(req.params.cardId)
+  Card.findById(req.params.cardId)
+    .then((card) => {
+      if (!card.owner.equals(req.user._id)) {
+        return Promise.reject(new Error('Вы пытаетесь удалить чужую карточку'));
+      }
+      return card;
+    })
+    .then((card) => {
+      card.remove();
+    })
     .then(() => Card.find({}))
     .then((cards) => res.send(cards))
     .catch((err) => {
-      const { status, message } = checkErrFindCard(err);
-      return (res.status(status).send({ message }));
+      res
+        .status(401)
+        .send({ message: err.message });
     });
 };
 

@@ -5,7 +5,6 @@ const { checkErrCreate, checkErrFindUser, checkErrUpdate } = require('../utils/e
 
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
-
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, 'some-secret-key',
