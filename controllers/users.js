@@ -1,10 +1,31 @@
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const { checkErrCreate, checkErrFindUser, checkErrUpdate } = require('../utils/errors.js');
 
+module.exports.login = (req, res) => {
+  const { email, password } = req.body;
+
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, 'some-secret-key',
+        { expiresIn: '7d' });
+      // аутентификация успешна
+      res.cookie('jwt', token, {
+        maxAge: 604800000,
+        httpOnly: true,
+      })
+        .end();
+    })
+    .catch((err) => {
+      res
+        .status(401)
+        .send({ message: err.message });
+    });
+};
+
 module.exports.getUsers = (req, res) => {
   User.find({})
-    .orFail()
     .then((user) => res.send(user))
     .catch((err) => {
       const { status, message } = checkErrFindUser(err);
@@ -14,7 +35,15 @@ module.exports.getUsers = (req, res) => {
 
 module.exports.getUser = (req, res) => {
   User.findById(req.params.userId)
-    .orFail()
+    .then((user) => res.send(user))
+    .catch((err) => {
+      const { status, message } = checkErrFindUser(err);
+      return (res.status(status).send({ message }));
+    });
+};
+
+module.exports.getMe = (req, res) => {
+  User.findById(req.user)
     .then((user) => res.send(user))
     .catch((err) => {
       const { status, message } = checkErrFindUser(err);
@@ -30,7 +59,7 @@ module.exports.createUser = (req, res) => {
     .then((hash) => User.create({
       name, about, avatar, email, password: hash,
     }))
-    .orFail()
+    .then((user) => User.findById(user._id))
     .then((user) => res.send(user))
     .catch((err) => {
       const { status, message } = checkErrCreate(err);
@@ -41,7 +70,6 @@ module.exports.createUser = (req, res) => {
 module.exports.updateProfile = (req, res) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(req.user._id, { name, about })
-    .orFail()
     .then((user) => res.send(user))
     .catch((err) => {
       const { status, message } = checkErrUpdate(err);
@@ -52,7 +80,6 @@ module.exports.updateProfile = (req, res) => {
 module.exports.updateAvatar = (req, res) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { avatar })
-    .orFail()
     .then((user) => res.send(user))
     .catch((err) => {
       const { status, message } = checkErrUpdate(err);

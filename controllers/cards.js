@@ -3,7 +3,6 @@ const { checkErrCreate, checkErrFindCard } = require('../utils/errors.js');
 
 module.exports.getCards = (req, res) => {
   Card.find({})
-    .orFail()
     .then((cards) => res.send(cards))
     .catch((err) => {
       const { status, message } = checkErrFindCard(err);
@@ -14,7 +13,6 @@ module.exports.getCards = (req, res) => {
 module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
   Card.create({ name, link, owner: req.user._id })
-    .orFail()
     .then((card) => res.send(card))
     .catch((err) => {
       const { status, message } = checkErrCreate(err);
@@ -24,7 +22,6 @@ module.exports.createCard = (req, res) => {
 
 module.exports.deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
-    .orFail()
     .then(() => Card.find({}))
     .then((cards) => res.send(cards))
     .catch((err) => {
@@ -35,7 +32,6 @@ module.exports.deleteCard = (req, res) => {
 
 module.exports.likeCard = (req, res) => {
   Card.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: req.user._id } }, { new: true })
-    .orFail()
     .then((card) => res.send(card))
     .catch((err) => {
       const { status, message } = checkErrFindCard(err);
@@ -45,7 +41,6 @@ module.exports.likeCard = (req, res) => {
 
 module.exports.dislikeCard = (req, res) => {
   Card.findByIdAndUpdate(req.params.cardId, { $pull: { likes: req.user._id } }, { new: true })
-    .orFail()
     .then((card) => res.send(card))
     .catch((err) => {
       const { status, message } = checkErrFindCard(err);

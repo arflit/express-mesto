@@ -24,16 +24,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(helmet());
-app.use((req, res, next) => {
-  req.user = {
-    _id: '60617700a858206f79089c90',
-  };
-  next();
-});
 app.use('/', router);
-app.use('*', (req, res) => {
-  res.status(404).send({ message: 'Страница не найдена' });
-});
 
 app.listen(PORT, () => {
 });
