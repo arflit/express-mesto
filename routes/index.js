@@ -5,6 +5,7 @@ const cardsRouter = require('./cards');
 const { createUser, login } = require('../controllers/users');
 const auth = require('../middlewares/auth');
 const errorsHandler = require('../middlewares/errors-handler');
+const ErrorWithStatusCode = require('../middlewares/error-with-status-code');
 
 router.post('/signin', celebrate({
   body: Joi.object().keys({
@@ -22,8 +23,8 @@ router.post('/signup', celebrate({
 }), createUser);
 router.use('/users', auth, usersRouter);
 router.use('/cards', auth, cardsRouter);
-router.use('*', (req, res) => {
-  res.status(404).send({ message: 'Страница не найдена' });
+router.use('*', (req, res, next) => {
+  next(new ErrorWithStatusCode(404, 'Страница не найдена'));
 });
 router.use(errors);
 router.use(errorsHandler);

@@ -1,11 +1,10 @@
 const jwt = require('jsonwebtoken');
+const ErrorWithStatusCode = require('./error-with-status-code');
 
 // eslint-disable-next-line consistent-return
 function auth(req, res, next) {
   if (!(req.cookies.jwt)) {
-    return res
-      .status(401)
-      .send({ message: 'Необходима авторизация' });
+    next(new ErrorWithStatusCode(401, 'Необходима авторизация'));
   }
 
   const token = req.cookies.jwt;
@@ -14,9 +13,7 @@ function auth(req, res, next) {
   try {
     payload = jwt.verify(token, 'some-secret-key');
   } catch (err) {
-    return res
-      .status(401)
-      .send({ message: 'Необходима авторизация' });
+    next(new ErrorWithStatusCode(401, 'Необходима авторизация'));
   }
 
   req.user = payload; // записываем пейлоуд в объект запроса
