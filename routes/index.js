@@ -6,7 +6,9 @@ const { createUser, login } = require('../controllers/users');
 const auth = require('../middlewares/auth');
 const errorsHandler = require('../middlewares/errors-handler');
 const ErrorWithStatusCode = require('../middlewares/error-with-status-code');
+const { requestLogger, errorLogger } = require('../middlewares/logger');
 
+router.use(requestLogger);
 router.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -26,6 +28,7 @@ router.use('/cards', auth, cardsRouter);
 router.use('*', (req, res, next) => {
   next(new ErrorWithStatusCode(404, 'Страница не найдена'));
 });
+router.use(errorLogger);
 router.use(errors);
 router.use(errorsHandler);
 
