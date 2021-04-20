@@ -1,4 +1,5 @@
 const Card = require('../models/card');
+
 const ErrorWithStatusCode = require('../middlewares/error-with-status-code');
 
 module.exports.getCards = (req, res, next) => {
