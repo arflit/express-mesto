@@ -36,7 +36,7 @@ module.exports.login = (req, res, next) => {
           httpOnly: true,
         })
         .status(200)
-        .send({ message: 'Вы успешно авторизовались' })
+        .send({ token })
         .end();
     })
     .catch(next);
