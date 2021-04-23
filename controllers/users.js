@@ -42,6 +42,10 @@ module.exports.login = (req, res, next) => {
     .catch(next);
 };
 
+module.exports.signOut = (req, res) => {
+  res.clearCookie('jwt').send({ massege: 'cookie удалена!' });
+};
+
 module.exports.getUsers = (req, res, next) => {
   User.find({})
     .orFail(new ErrorWithStatusCode(404, 'В базе данных нет пользователей'))

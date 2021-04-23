@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { errors, celebrate, Joi } = require('celebrate');
 const usersRouter = require('./users');
 const cardsRouter = require('./cards');
-const { createUser, login } = require('../controllers/users');
+const { createUser, login, signOut } = require('../controllers/users');
 const auth = require('../middlewares/auth');
 const errorsHandler = require('../middlewares/errors-handler');
 const ErrorWithStatusCode = require('../middlewares/error-with-status-code');
@@ -23,6 +23,7 @@ router.post('/signup', celebrate({
 
   }),
 }), createUser);
+router.delete('/signout', auth, signOut);
 router.use('/users', auth, usersRouter);
 router.use('/cards', auth, cardsRouter);
 router.use('*', (req, res, next) => {
