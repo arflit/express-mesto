@@ -36,7 +36,7 @@ module.exports.login = (req, res, next) => {
           httpOnly: true,
         })
         .status(200)
-        .send({ token })
+        .send(user)
         .end();
     })
     .catch(next);
