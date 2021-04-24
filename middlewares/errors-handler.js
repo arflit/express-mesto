@@ -1,9 +1,13 @@
 function errorsHandler(err, req, res, next) {
-  const { statusCode = 500, message = 'На сервере произошла ошибка' } = err;
+  let { statusCode = 500, message = 'На сервере произошла ошибка' } = err;
+  if (message === 'celebrate request validation failed') {
+    message = err.validation.body.message;
+  }
+
   res
     .status(statusCode)
     .send({
-      err,
+      message,
     });
 
   next();
