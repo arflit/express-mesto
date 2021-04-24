@@ -9,10 +9,14 @@ const ErrorWithStatusCode = require('../middlewares/error-with-status-code');
 const { requestLogger, errorLogger } = require('../middlewares/logger');
 
 router.use(requestLogger);
-router.use('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
-  }, 1000);
+router.use('/crash-test', (req, res) => {
+  res
+    .send({ message: 'Сейчас мы упадём!' })
+    .then(() => {
+      setTimeout(() => {
+        throw new Error('Сервер сейчас упадёт');
+      }, 1000);
+    });
 });
 router.post('/signin', celebrate({
   body: Joi.object().keys({
