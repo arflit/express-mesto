@@ -11,7 +11,7 @@ const { requestLogger, errorLogger } = require('../middlewares/logger');
 router.use(requestLogger);
 router.get('/crash-test', (req, res) => {
   res
-    .send('Сейчас мы упадём!')
+    .send({ message: 'Сейчас мы упадём!' })
     .then(() => {
       setTimeout(() => {
         throw new Error('Сервер сейчас упадёт');
