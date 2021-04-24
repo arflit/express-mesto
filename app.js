@@ -7,12 +7,12 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const cors = require('cors');
 
-const corsWhiteList = ['http://mesto.flitman.ru', 'https://mesto.flitman.ru'];
+const corsWhiteList = ['http://mesto.flitman.ru', 'https://mesto.flitman.ru', '*'];
 
 const corsOptions = {
   origin: (origin, callback) => {
     if (corsWhiteList.indexOf(origin) !== -1) {
-      callback('*', true);
+      callback(null, true);
     }
   },
   credentials: true,
