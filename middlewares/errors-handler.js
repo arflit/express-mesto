@@ -3,7 +3,7 @@ function errorsHandler(err, req, res, next) {
   res
     .status(statusCode)
     .send({
-      message,
+      err,
     });
 
   next();
