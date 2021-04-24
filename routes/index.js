@@ -9,7 +9,7 @@ const ErrorWithStatusCode = require('../middlewares/error-with-status-code');
 const { requestLogger, errorLogger } = require('../middlewares/logger');
 
 router.use(requestLogger);
-router.use('/crash-test', () => {
+router.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
