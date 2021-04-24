@@ -16,7 +16,7 @@ const corsOptions = {
     }
   },
   credentials: true,
-}; */
+};
 
 const router = require('./routes/index');
 
