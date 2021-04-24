@@ -10,13 +10,11 @@ const { requestLogger, errorLogger } = require('../middlewares/logger');
 
 router.use(requestLogger);
 router.use('/crash-test', (req, res) => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 1000);
   res
-    .send({ message: 'Сейчас мы упадём!' })
-    .then(() => {
-      setTimeout(() => {
-        throw new Error('Сервер сейчас упадёт');
-      }, 1000);
-    });
+    .send({ message: 'Сейчас мы упадём!' });
 });
 router.post('/signin', celebrate({
   body: Joi.object().keys({
