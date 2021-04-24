@@ -15,7 +15,7 @@ router.get('/crash-test', (req, res) => {
     .then(() => {
       setTimeout(() => {
         throw new Error('Сервер сейчас упадёт');
-      }, 0);
+      }, 1000);
     });
 });
 router.post('/signin', celebrate({
