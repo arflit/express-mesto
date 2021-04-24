@@ -7,7 +7,7 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const cors = require('cors');
 
-const corsWhiteList = ['http://mesto.flitman.ru', 'https://mesto.flitman.ru'];
+/* const corsWhiteList = ['http://mesto.flitman.ru', 'https://mesto.flitman.ru'];
 
 const corsOptions = {
   origin: (origin, callback) => {
@@ -16,7 +16,7 @@ const corsOptions = {
     }
   },
   credentials: true,
-};
+}; */
 
 const router = require('./routes/index');
 
@@ -37,7 +37,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(helmet());
-app.use(cors(corsOptions));
+app.use(cors/* (corsOptions) */);
 app.use('/', router);
 
 app.listen(PORT, () => {
