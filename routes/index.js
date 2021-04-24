@@ -37,7 +37,7 @@ router.use('*', (req, res, next) => {
   next(new ErrorWithStatusCode(404, 'Страница не найдена'));
 });
 router.use(errorLogger);
-router.use(errors);
+router.use(errors());
 router.use(errorsHandler);
 
 module.exports = router;
