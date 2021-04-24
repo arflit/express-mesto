@@ -37,7 +37,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(helmet());
-app.use(cors(corsOptions));
+app.use(cors(/* corsOptions */));
 app.use('/', router);
 
 app.listen(PORT, () => {
