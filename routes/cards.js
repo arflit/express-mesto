@@ -11,11 +11,11 @@ router.post('/', celebrate({
     link: Joi.string().required().pattern(/^(https?:\/\/)(www\.)?([\da-z-.]+)\.([a-z.]{2,6})[\da-zA-Z-._~:?#[\]@!$&'()*+,;=/]*\/?#?$/i),
   }),
 }), createCard);
-router.delete('/:cardId', celebrate({
+router.delete('/:cardId', /* celebrate({
   params: Joi.object().keys({
     cardId: Joi.string().hex().length(24),
   }),
-}), deleteCard);
+}), */ deleteCard);
 router.put('/:cardId/likes', celebrate({
   params: Joi.object().keys({
     cardId: Joi.string().hex().length(24),
